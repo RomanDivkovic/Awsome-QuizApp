@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 22,
     textAlign: 'center',
-    fontFamily: 'Montserrat2',
+    fontFamily: 'boldItalic',
     color: '#fff'
   },
   questTitle: {
     fontSize: 28,
     marginBottom: 40,
-    fontFamily: 'Montserrat2'
+    fontFamily: 'boldItalic'
   },
   container: {
     flex: 1,

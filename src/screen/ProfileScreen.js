@@ -3,7 +3,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { auth } from '../../firebase'
@@ -12,13 +13,13 @@ import CustomButton from '../components/CustomButton'
 const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState()
 
-  //   useEffect(() => {
-  //     const subscriber = auth().onAuthStateChanged((user) => {
-  //       console.log('user', JSON.stringify(user))
-  //       setUser(user)
-  //     })
-  //     return subscriber
-  //   }, [])
+  useEffect(() => {
+    const subscriber = auth.onAuthStateChanged((user) => {
+      console.log('user', JSON.stringify(user))
+      setUser(user)
+    })
+    return subscriber
+  }, [])
 
   function handleSignOut() {
     auth
@@ -29,38 +30,15 @@ const ProfileScreen = ({ navigation }) => {
       .catch((error) => alert(error.message))
   }
 
-  //   const logout = () => {
-  //     Alert.alert(
-  //       'Logout',
-  //       'Are you sure? You want to logout?',
-  //       [
-  //         {
-  //           text: 'Cancel',
-  //           onPress: () => {
-  //             return null
-  //           }
-  //         },
-  //         {
-  //           text: 'Confirm',
-  //           onPress: () => {
-  //             auth()
-  //               .signOut()
-  //               .then(() => navigation.replace('Login'))
-  //               .catch((error) => {
-  //                 console.log(error)
-  //                 if (error.code === 'auth/no-current-user')
-  //                   navigation.replace('Auth')
-  //                 else alert(error)
-  //               })
-  //           }
-  //         }
-  //       ],
-  //       { cancelable: false }
-  //     )
-  //   }
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.fistView}>
+        {user ? (
+          <Text>
+            Welcome {user.displayName ? user.displayName : user.email}
+          </Text>
+        ) : null}
+        <Text>Test</Text>
         <View style={styles.viewStyle}>
           <Text>Profile</Text>
         </View>
@@ -69,6 +47,35 @@ const ProfileScreen = ({ navigation }) => {
     </SafeAreaView>
   )
 }
+// const logout = ({ navigation }) => {
+//   Alert.alert(
+//     'Logout',
+//     'Are you sure? You want to logout?',
+//     [
+//       {
+//         text: 'Cancel',
+//         onPress: () => {
+//           return null
+//         }
+//       },
+//       {
+//         text: 'Confirm',
+//         onPress: () => {
+//           auth
+//             .signOut()
+//             .then(() => navigation.replace('Login'))
+//             .catch((error) => {
+//               console.log(error)
+//               if (error.code === 'auth/no-current-user')
+//                 navigation.replace('Auth')
+//               else alert(error)
+//             })
+//         }
+//       }
+//     ],
+//     { cancelable: false }
+//   )
+// }
 
 export default ProfileScreen
 

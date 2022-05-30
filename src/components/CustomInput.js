@@ -9,7 +9,8 @@ const CustomInput = (props) => {
         placeholder={props.placeholder}
         onChangeText={props.onChangeText}
         value={props.value}
-        keyboardType="default"
+        keyboardType={props.keyboardType}
+        secureTextEntry={props.secureTextEntry}
       />
     </View>
   )

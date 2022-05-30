@@ -1,6 +1,4 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
-//Navigation
+//Navigators and containers
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -10,6 +8,8 @@ import SplashScreen from './src/screen/SplashScreen'
 import RegisterScreen from './src/screen/RegisterScreen'
 import LoginScreen from './src/screen/LogInScreen'
 import ProfileScreen from './src/screen/ProfileScreen'
+import QuizScreen from './src/screen/QuizScreen'
+import ResultScreen from './src/screen/ResultScreen'
 
 // Fonts and icons for the app
 import { Ionicons } from '@expo/vector-icons'
@@ -20,29 +20,31 @@ export default function App() {
   const Stack = createStackNavigator()
 
   const [loaded] = useFonts({
-    Montserrat1: require('./src/fonts/MontserratAlternates-BoldItalic.ttf'),
-    Montserrat2: require('./src/fonts/MontserratAlternates-ExtraBoldItalic.ttf'),
-    Montserrat3: require('./src/fonts/MontserratAlternates-MediumItalic.ttf'),
-    Montserrat4: require('./src/fonts/MontserratAlternates-BoldItalic.ttf'),
-    Montserrat5: require('./src/fonts/MontserratAlternates-SemiBoldItalic.ttf'),
-    Montserrat6: require('./src/fonts/MontserratAlternates-Italic.ttf'),
-    Montserrat7: require('./src/fonts/MontserratAlternates-Medium.ttf')
+    boldItalic: require('./src/fonts/MontserratAlternates-BoldItalic.ttf'),
+    extraBoldItalic: require('./src/fonts/MontserratAlternates-ExtraBoldItalic.ttf'),
+    mediumItalic: require('./src/fonts/MontserratAlternates-MediumItalic.ttf'),
+    semiBoldItalic: require('./src/fonts/MontserratAlternates-SemiBoldItalic.ttf'),
+    italic: require('./src/fonts/MontserratAlternates-Italic.ttf'),
+    medium: require('./src/fonts/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) {
     return null
   }
+
+  ;<Ionicons name="game-controller-outline" size={24} color="black" />
   function HomeTabs() {
     return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName
-
             if (route.name === 'Profile') {
               iconName = focused ? 'ios-person' : 'ios-person-outline'
-            } else if (route.name === 'Quiz') {
-              iconName = focused ? 'ios-list' : 'ios-list-outline'
+            } else if (route.name === 'Home') {
+              iconName = focused
+                ? 'ios-game-controller'
+                : 'ios-game-controller-outline'
             }
 
             return <Ionicons name={iconName} size={size} color={color} />
@@ -73,33 +75,24 @@ export default function App() {
         <Stack.Screen
           name="Register"
           component={RegisterScreen}
-          options={{ headerShown: false }}
+          // options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Login"
           component={LoginScreen}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-        name="Result"
-        component={ResultScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Change"
-        component={changePassword}
-        options={{ headerShown: false }}
-      /> */}
+        <Stack.Screen
+          name="Quiz"
+          component={QuizScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Result"
+          component={ResultScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})

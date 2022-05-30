@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, TextInput, View } from 'react-native'
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+  Text,
+  TextInput
+} from 'react-native'
 import { auth } from '../../firebase'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
+import CustomInput from '../components/CustomInput'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('')
@@ -35,26 +43,34 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
+      <SafeAreaView>
+        <Text style={styles.title}>Trivia Quiz App</Text>
+        <View style={styles.inputContainer}>
+          <View style={styles.myInput}>
+            <CustomInput
+              placeholder="Email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              style={styles.myInput}
+              keyboardType="email-address"
+            />
+          </View>
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            style={styles.input}
+            secureTextEntry
+          />
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <CustomButton title="Login" onPress={() => handleLogin()} />
-        <CustomButton title="Register" onPress={() => handleSignUp()} />
-      </View>
+        <View style={styles.buttonContainer}>
+          <CustomButton title="Login" onPress={() => handleLogin()} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <CustomButton title="Register" onPress={() => handleSignUp()} />
+        </View>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   )
 }
@@ -69,8 +85,19 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   buttonContainer: {
-    width: '60%',
-    marginTop: 40
+    // width: '60%',
+    padding: 5
+    // marginTop: 40
+  },
+  myInput: {
+    padding: 15,
+    margin: 5
+  },
+  title: {
+    fontFamily: 'extraBoldItalic',
+    fontSize: 25,
+    textAlign: 'center',
+    padding: 10
   },
   input: {
     margin: 10,
@@ -81,7 +108,6 @@ const styles = StyleSheet.create({
     borderColor: '#3b4053',
     backgroundColor: 'whitesmoke',
     paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10
+    paddingVertical: 10
   }
 })

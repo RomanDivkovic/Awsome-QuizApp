@@ -40,10 +40,20 @@ const HomeScreen = () => {
   ])
 
   return (
-    <View style={styles.view}>
-      <SafeAreaView>
-        <Text style={styles.h1}>Choose Category</Text>
+    <SafeAreaView>
+      <Text style={styles.h1}>Choose Category</Text>
 
+      {/* <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          onPress={setTheCategory(value)}
+        /> */}
+
+      <View style={{ padding: 10 }}>
         <DropDownPicker
           open={open}
           value={value}
@@ -53,25 +63,18 @@ const HomeScreen = () => {
           setItems={setItems}
           onPress={setTheCategory(value)}
         />
+        <Text style={styles.h1}>Choose Amount</Text>
+        <CustomInput
+          placeholder="Enter amount of questions"
+          value={text}
+          onChangeText={onTextChange}
+        />
+      </View>
 
-        <View style={{ padding: 10 }}>
-          <Text style={styles.h1}>Choose Amount</Text>
-          <CustomInput
-            placeholder="Enter amount of questions (max 50)"
-            value={text}
-            onChangeText={onTextChange}
-          />
-        </View>
-
-        <View style={{ padding: 20 }}>
-          <CustomButton
-            // value={onTextChange('Sport')}
-            title="Start Quiz"
-            onPress={startQuiz}
-          />
-        </View>
-      </SafeAreaView>
-    </View>
+      <View style={{ padding: 20 }}>
+        <CustomButton title="Start Quiz" onPress={startQuiz} />
+      </View>
+    </SafeAreaView>
   )
   function setTheCategory(item) {
     console.log(item)
@@ -81,8 +84,6 @@ const HomeScreen = () => {
   }
 
   function startQuiz() {
-    // console.log('Sports quiz, amount of questions = ', text)
-
     navigation.navigate('Play', {
       paramKey: text,
       paramSecond: categories
@@ -92,4 +93,11 @@ const HomeScreen = () => {
 
 export default HomeScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  h1: {
+    fontFamily: 'extraBoldItalic',
+    fontSize: 25,
+    textAlign: 'center',
+    padding: 15
+  }
+})
