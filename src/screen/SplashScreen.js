@@ -1,6 +1,12 @@
 // Import React and Component
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView, ActivityIndicator, View, StyleSheet } from 'react-native'
+import {
+  SafeAreaView,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  Text
+} from 'react-native'
 
 import { auth } from '../../firebase'
 
@@ -20,6 +26,7 @@ export default function SplashScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
+        <Text style={styles.text}>Loading</Text>
         <ActivityIndicator
           animating={animating}
           color="#FFFFFF"
@@ -40,5 +47,9 @@ const styles = StyleSheet.create({
   activityIndicator: {
     alignItems: 'center',
     height: 80
+  },
+  text: {
+    fontFamily: 'boldItalic',
+    fontSize: 18
   }
 })

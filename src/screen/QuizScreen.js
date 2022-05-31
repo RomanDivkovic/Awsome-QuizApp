@@ -15,52 +15,88 @@ const QuizScreen = ({ navigation, route }) => {
   const amount = route.params.paramKey
   const url = `https://opentdb.com/api.php?amount=${amount}&category=${type}&type=multiple`
 
-  useEffect(() => {
+  useEffect(async () => {
     let tempQuestionsArr = []
-
     let myAnswers = []
-    const getAdvice = () => {
-      axios.get(url).then((response) => {
-        setResult(response.data)
-        console.log(theResult)
 
-        let questionId = 0
+    // const getAdvice = () => {
+    //   axios.get(url).then((response) => {
+    //     setResult(response.data)
+    //     console.log('axios call log: ' + theResult)
 
-        theResult.results.forEach((question) => {
-          // response_data.results.forEach((question) => {
-          let answers = []
+    //     let questionId = 0
 
-          //CORRECT
-          const correct_answer = {
-            title: question.correct_answer,
-            isCorrect: true
-          }
-          answers.push(correct_answer)
-          myAnswers.push(correct_answer)
-          setScore(score + 1)
-          //INCORRECT
-          question.incorrect_answers.forEach((item) => {
-            const incorrect_answer = { title: item, isCorrect: false }
-            answers.push(incorrect_answer)
-            myAnswers.push(incorrect_answer)
-          })
+    //     theResult.results.forEach((question) => {
+    //       // response_data.results.forEach((question) => {
+    //       let answers = []
 
-          const formatted_question = {
-            id: questionId++,
-            title: question.question,
-            type: question.type,
-            category: question.category,
-            difficulty: question.difficulty,
-            answers: shuffle(answers)
-          }
-          tempQuestionsArr.push(formatted_question)
-        })
-        console.log('Log tempArray ' + JSON.stringify(tempQuestionsArr))
-        setQuestions(tempQuestionsArr)
+    //       //CORRECT
+    //       const correct_answer = {
+    //         title: question.correct_answer,
+    //         isCorrect: true
+    //       }
+    //       answers.push(correct_answer)
+    //       myAnswers.push(correct_answer)
+    //       setScore(score + 1)
+    //       //INCORRECT
+    //       question.incorrect_answers.forEach((item) => {
+    //         const incorrect_answer = { title: item, isCorrect: false }
+    //         answers.push(incorrect_answer)
+    //         myAnswers.push(incorrect_answer)
+    //       })
+
+    //       const formatted_question = {
+    //         id: questionId++,
+    //         title: question.question,
+    //         type: question.type,
+    //         category: question.category,
+    //         difficulty: question.difficulty,
+    //         answers: shuffle(answers)
+    //       }
+    //       tempQuestionsArr.push(formatted_question)
+    //     })
+    //     console.log('Log tempArray ' + JSON.stringify(tempQuestionsArr))
+    //     setQuestions(tempQuestionsArr)
+    //   })
+    // }
+    // getAdvice()
+    const url = `https://opentdb.com/api.php?amount=${amount}&category=${type}&type=multiple`
+    const response = await fetch(url, { method: 'get' })
+    const result = await response.json()
+
+    setResult(result)
+
+    let questionId = 0
+
+    result.results.forEach((question) => {
+      // response_data.results.forEach((question) => {
+      let answers = []
+
+      //CORRECT
+      const correct_answer = { title: question.correct_answer, isCorrect: true }
+      answers.push(correct_answer)
+      myAnswers.push(correct_answer)
+      setScore(score + 1)
+      //INCORRECT
+      question.incorrect_answers.forEach((item) => {
+        const incorrect_answer = { title: item, isCorrect: false }
+        answers.push(incorrect_answer)
+        myAnswers.push(incorrect_answer)
       })
-    }
-    getAdvice()
-  }, [score, theResult, url])
+
+      const formatted_question = {
+        id: questionId++,
+        title: question.question,
+        type: question.type,
+        category: question.category,
+        difficulty: question.difficulty,
+        answers: shuffle(answers)
+      }
+      tempQuestionsArr.push(formatted_question)
+    })
+    // console.log(JSON.stringify(tempQuestionsArr));
+    setQuestions(tempQuestionsArr)
+  }, [])
 
   const shuffle = (arr) => {
     let currentIndex = arr.length,
@@ -112,18 +148,15 @@ const QuizScreen = ({ navigation, route }) => {
       {questions.length > 0 ? questionsUI : <Text>No Questions </Text>}
     </View>
   )
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#ddf0f7',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 50
-    }
-  })
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ddf0f7',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 50
+  }
+})
 
 export default QuizScreen
-
-const styles = StyleSheet.create({})

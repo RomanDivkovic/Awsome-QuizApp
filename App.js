@@ -32,7 +32,6 @@ export default function App() {
     return null
   }
 
-  ;<Ionicons name="game-controller-outline" size={24} color="black" />
   function HomeTabs() {
     return (
       <Tab.Navigator

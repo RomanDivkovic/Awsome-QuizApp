@@ -29,8 +29,7 @@ export default CustomButton
 // Button design
 const styles = StyleSheet.create({
   viewBackground: {
-    maxHeight: 50,
-    backgroundColor: '#ddf0f7'
+    maxHeight: 50
   },
   buttonText: {
     fontSize: 24,

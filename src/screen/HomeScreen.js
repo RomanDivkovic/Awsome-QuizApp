@@ -5,7 +5,7 @@ import CustomInput from '../components/CustomInput'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import DropDownPicker from 'react-native-dropdown-picker'
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [text, onTextChange] = useState('')
   const [categories, setCategoris] = useState(0)
   const [apiResult, setResult] = useState([])
@@ -43,17 +43,17 @@ const HomeScreen = () => {
     <SafeAreaView>
       <Text style={styles.h1}>Choose Category</Text>
 
-      {/* <DropDownPicker
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          onPress={setTheCategory(value)}
-        /> */}
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        onPress={setTheCategory(value)}
+      />
 
-      <View style={{ padding: 10 }}>
+      {/* <View style={styles.dropDownView}>
         <DropDownPicker
           open={open}
           value={value}
@@ -63,6 +63,9 @@ const HomeScreen = () => {
           setItems={setItems}
           onPress={setTheCategory(value)}
         />
+      </View> */}
+
+      <View style={{ padding: 10 }}>
         <Text style={styles.h1}>Choose Amount</Text>
         <CustomInput
           placeholder="Enter amount of questions"
@@ -71,7 +74,7 @@ const HomeScreen = () => {
         />
       </View>
 
-      <View style={{ padding: 20 }}>
+      <View style={styles.buttonView}>
         <CustomButton title="Start Quiz" onPress={startQuiz} />
       </View>
     </SafeAreaView>
@@ -84,7 +87,7 @@ const HomeScreen = () => {
   }
 
   function startQuiz() {
-    navigation.navigate('Play', {
+    navigation.navigate('Quiz', {
       paramKey: text,
       paramSecond: categories
     })
@@ -99,5 +102,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     padding: 15
+  },
+  dropDownView: {
+    padding: 10
+  },
+  buttonView: {
+    padding: 10
   }
 })

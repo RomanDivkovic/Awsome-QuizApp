@@ -34,11 +34,10 @@ const ProfileScreen = ({ navigation }) => {
     <SafeAreaView style={styles.safe}>
       <View style={styles.fistView}>
         {user ? (
-          <Text>
+          <Text style={styles.userName}>
             Welcome {user.displayName ? user.displayName : user.email}
           </Text>
         ) : null}
-        <Text>Test</Text>
         <View style={styles.viewStyle}>
           <Text>Profile</Text>
         </View>
@@ -97,23 +96,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  buttonStyle: {
-    minWidth: 300,
-    backgroundColor: '#7DE24E',
-    borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: '#7DE24E',
-    height: 40,
-    alignItems: 'center',
-    borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
-    marginBottom: 25
-  },
-  buttonTextStyle: {
-    color: '#FFFFFF',
-    paddingVertical: 10,
-    fontSize: 16
+  userName: {
+    fontFamily: 'medium',
+    fontSize: 15
   }
 })
