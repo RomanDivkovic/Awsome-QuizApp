@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 //   import QuestionButton from '../components/QuestionButton'
 import QuestionItem from '../components/QuestionButton'
@@ -9,79 +9,32 @@ const QuizScreen = ({ navigation, route }) => {
   const [questions, setQuestions] = useState([])
   const [nextQuestion, setNextQuestion] = useState(0)
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [score, setScore] = useState(1)
+  const [score, setScore] = useState(0)
+  const [userAnswers] = useState([])
 
   const type = route.params.paramSecond
   const amount = route.params.paramKey
-  const url = `https://opentdb.com/api.php?amount=${amount}&category=${type}&type=multiple`
 
-  useEffect(async () => {
+  const getData = async () => {
     let tempQuestionsArr = []
-    let myAnswers = []
-
-    // const getAdvice = () => {
-    //   axios.get(url).then((response) => {
-    //     setResult(response.data)
-    //     console.log('axios call log: ' + theResult)
-
-    //     let questionId = 0
-
-    //     theResult.results.forEach((question) => {
-    //       // response_data.results.forEach((question) => {
-    //       let answers = []
-
-    //       //CORRECT
-    //       const correct_answer = {
-    //         title: question.correct_answer,
-    //         isCorrect: true
-    //       }
-    //       answers.push(correct_answer)
-    //       myAnswers.push(correct_answer)
-    //       setScore(score + 1)
-    //       //INCORRECT
-    //       question.incorrect_answers.forEach((item) => {
-    //         const incorrect_answer = { title: item, isCorrect: false }
-    //         answers.push(incorrect_answer)
-    //         myAnswers.push(incorrect_answer)
-    //       })
-
-    //       const formatted_question = {
-    //         id: questionId++,
-    //         title: question.question,
-    //         type: question.type,
-    //         category: question.category,
-    //         difficulty: question.difficulty,
-    //         answers: shuffle(answers)
-    //       }
-    //       tempQuestionsArr.push(formatted_question)
-    //     })
-    //     console.log('Log tempArray ' + JSON.stringify(tempQuestionsArr))
-    //     setQuestions(tempQuestionsArr)
-    //   })
-    // }
-    // getAdvice()
-    const url = `https://opentdb.com/api.php?amount=${amount}&category=${type}&type=multiple`
-    const response = await fetch(url, { method: 'get' })
-    const result = await response.json()
-
-    setResult(result)
+    const { data } = await axios.get(
+      `https://opentdb.com/api.php?amount=${amount}&category=${type}&type=multiple`
+    )
+    setResult(data)
 
     let questionId = 0
 
-    result.results.forEach((question) => {
-      // response_data.results.forEach((question) => {
+    data.results.forEach((question) => {
       let answers = []
 
       //CORRECT
       const correct_answer = { title: question.correct_answer, isCorrect: true }
       answers.push(correct_answer)
-      myAnswers.push(correct_answer)
-      setScore(score + 1)
-      //INCORRECT
+
+      //   INCORRECT
       question.incorrect_answers.forEach((item) => {
         const incorrect_answer = { title: item, isCorrect: false }
         answers.push(incorrect_answer)
-        myAnswers.push(incorrect_answer)
       })
 
       const formatted_question = {
@@ -94,8 +47,10 @@ const QuizScreen = ({ navigation, route }) => {
       }
       tempQuestionsArr.push(formatted_question)
     })
-    // console.log(JSON.stringify(tempQuestionsArr));
     setQuestions(tempQuestionsArr)
+  }
+  useEffect(() => {
+    getData()
   }, [])
 
   const shuffle = (arr) => {
@@ -119,15 +74,24 @@ const QuizScreen = ({ navigation, route }) => {
     let nextQuest = questions[currentQuestion].id
     setNextQuestion(nextQuest)
     if (number === amount || number === theResult.results.length) {
+      let copyArr = [...userAnswers]
+      console.log('Data log before navigation: ' + copyArr)
       navigation.navigate('Result', {
         paramKey: score,
-        paramSecond: amount
+        paramSecond: amount,
+        paramAnswers: copyArr
       })
     }
   }
 
   const onAnswer = (answer) => {
+    if (answer.isCorrect === true) {
+      setScore(score + 1)
+      console.log('user score is now: ' + score)
+    }
     console.log(JSON.stringify(answer))
+    userAnswers.push(answer)
+    console.log('User answers are :' + JSON.stringify(userAnswers))
   }
 
   const questionsUI = questions.map((question, index) => {
@@ -145,7 +109,13 @@ const QuizScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {questions.length > 0 ? questionsUI : <Text>No Questions </Text>}
+      {questions.length > 0 ? (
+        questionsUI
+      ) : (
+        <View>
+          <Text>Loading questions</Text>
+        </View>
+      )}
     </View>
   )
 }
@@ -156,6 +126,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 50
+  },
+  activityContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  activityIndicator: {
+    alignItems: 'center',
+    height: 80
   }
 })
 

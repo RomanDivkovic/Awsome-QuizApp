@@ -6,21 +6,28 @@ import CustomButton from '../components/CustomButton'
 const ResultScreen = ({ navigation, route }) => {
   const result = route.params.paramKey
   const total = route.params.paramSecond
+  const answers = route.params.paramsAnswers
+
+  //JSON.stringify(answer)  console.log('Checking if all answers are here: ' + JSON.stringify(answers))
+  // answers.forEach((element) => {
+  //   console.log(JSON.stringify(element))
+  // })
+  console.log(answers)
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.h1}>ResultScreen</Text>
       </View>
-      <View>
-        <Text>
+      <View style={styles.resultView}>
+        <Text style={styles.resultText}>
           You had {result} out of {total}
         </Text>
       </View>
       <View style={styles.buttonView}>
         <CustomButton
           title="Go to quiz"
-          onPress={() => navigation.navigate('Quiz')}
+          onPress={() => navigation.navigate('Home')}
         />
       </View>
     </SafeAreaView>
@@ -36,7 +43,6 @@ const styles = StyleSheet.create({
     padding: 2
   },
   h1: {
-    // textAlign: 'center',
     fontFamily: 'boldItalic',
     fontSize: 20,
     padding: 10
@@ -44,5 +50,12 @@ const styles = StyleSheet.create({
   buttonView: {
     width: '60%',
     padding: 15
+  },
+  resultView: {
+    flex: 1
+  },
+  resultText: {
+    fontFamily: 'extraBoldItalic',
+    fontSize: 22
   }
 })

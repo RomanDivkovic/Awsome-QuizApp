@@ -80,7 +80,6 @@ const HomeScreen = ({ navigation }) => {
     </SafeAreaView>
   )
   function setTheCategory(item) {
-    console.log(item)
     useEffect(() => {
       setCategoris(item)
     })
